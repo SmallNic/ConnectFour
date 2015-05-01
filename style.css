@@ -1,0 +1,41 @@
+/*<div id="gameboard-container">
+  <div class="piece"></div
+</div>*/
+
+
+#gameboardContainer {
+  border: solid 1px black;
+  margin: 0 auto;
+  width:267px;
+}
+
+.piece {
+  border: solid 1px black;
+  width:30px;
+  height:30px;
+  margin:2px;
+  border-radius: 50%;
+}
+
+td, tr{
+  margin:0;
+  padding:0;
+}
+
+#button_space{
+  margin:20px auto;
+  text-align:center;
+}
+
+
+.button {
+  color: #FFF;
+  font-family: Josefin Slab;
+  font-size: 50px;
+  text-align: center;
+  border: 2px solid black;
+  margin:0 auto;
+  padding: 15px;
+  border-radius: 50%;
+  width:150px;
+}
