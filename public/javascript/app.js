@@ -222,10 +222,11 @@ $(document).ready(function(){
   var currentPlayerIcon = $(".current-player-icon");
   var connectFour = $("#connect-four")
 
-  var gameCount = 0
-  var redScore = 0
-  var blueScore = 0
-  var lastWinner;
+  var gameStats = $("#game-stats")
+  var gameCount = gameStats.attr("game-count")
+  var redScore = gameStats.attr("red-score")
+  var blueScore = gameStats.attr("blue-score")
+  var lastWinner = gameStats.attr("last-winner")
 
   setBoard();
 
@@ -235,6 +236,7 @@ $(document).ready(function(){
     console.log("You started a new game")
     setBoard();
   })
+
 
   for(var i=0; i <pieces.length; i++){
 
@@ -291,8 +293,6 @@ $(document).ready(function(){
           // }).always(function() {
           //   console.log( "finished" );
           // });
-
-
         }
         else{
           currentPlayer = getNextPlayer()

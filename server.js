@@ -24,7 +24,11 @@ server.listen(process.env.PORT || 3000, function(){
 })
 
 app.get("/", function(req, res){
-  res.render("index")
+
+  Game.findOne({}, function (err, game) {
+    if (err) console.log(err);
+    res.render("index", {game:game})
+  })
 })
 
 app.get("/save", function(req, res){
@@ -33,13 +37,11 @@ app.get("/save", function(req, res){
   var blueScore = req.query.blueScore;
   var lastWinner = req.query.lastWinner;
 
-
   Game.update({ num:gameCount, redScore:redScore, blueScore:blueScore, lastWinner:lastWinner}, function (err, raw) {
-  if (err) return handleError(err);
-  console.log('The raw response from Mongo was ', raw);
-});
-
-
+    if (err) return handleError(err);
+    // console.log('The raw response from Mongo was ', raw);
+  });
+  Game.save
 
   console.log("gameCount", gameCount)
   console.log("redScore", redScore)

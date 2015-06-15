@@ -3,6 +3,7 @@
 
     <div class="column column-3 sidebar">
       <h2>Current Player:</h2>
+
       <div class="current-player-icon">
       </div>
     </div>
@@ -12,17 +13,18 @@
         <h1 id="connect-four"><span class="vitamin-c">Connect</span><span class="gamebookers-blue">Four</span></h1>
       </div>
       <div class="row">
-        <button id="newGame">New Game</button>
+        <button id="newGame" >New Game</button>
+        <span id="game-stats" game-count={{game.redScore}} last-winner={{game.lastWinner}} red-score={{game.redScore}} blue-score={{game.blueScore}}></span>
       </div>
     </div>
 
     <div class="column column-3 sidebar">
       <h2>Score:</h2>
       <div>
-        Red: <span id="red-score">0</span>
+        Red: <span id="red-score">{{game.redScore}}</span>
       </div>
       <div>
-        Blue: <span id="blue-score">0</span>
+        Blue: <span id="blue-score">{{game.blueScore}}</span>
       </div>
     </div>
 
