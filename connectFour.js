@@ -8,16 +8,20 @@ $(document).ready(function(){
       $(pieces[i]).attr("color","white")
       $(pieces[i]).css("backgroundColor","white")
     }
-    currentPlayer = null
-    blueButton.css("box-shadow","0px 0px 0px 0px")
-    redButton.css("box-shadow","0px 0px 0px 0px")
-    $("h2").text("Choose 1st Player")
 
-    gameboardContainer.css("animation-name", "none")
-    gameboardContainer.css("-webkit-animation-name", "none")
+    $(connectFour).html("<span class='vitamin-c'>Connect</span><span class='gamebookers-blue'>Four</span>")
 
-    gameboardContainer.css("animation-duration", "0s")
-    gameboardContainer.css("-webkit-animation-duration", "0s")
+
+    if (gameCount > 0){
+      currentPlayer = "red"
+      $(currentPlayerIcon).css("backgroundColor",currentPlayer)
+    }
+
+    // gameboardContainer.css("animation-name", "none")
+    // gameboardContainer.css("-webkit-animation-name", "none")
+    //
+    // gameboardContainer.css("animation-duration", "0s")
+    // gameboardContainer.css("-webkit-animation-duration", "0s")
 
   }
 
@@ -32,14 +36,44 @@ $(document).ready(function(){
     return ((currentPlayer === "red") ? "blue" : "red")
   }
 
-  function highlightCurrentPlayer(player){
-    if(player === "red"){
-      redButton.css("box-shadow","0px 0px 50px 0px orange")
-      blueButton.css("box-shadow","0px 0px 0px 0px")
+  function isUnoccupied(spot){
+    return (spot.attr("space-taken") === "true" ? false : true)
+  }
+
+  function isBottomRow(spot){
+    return (parseInt(spot.attr("row")) === 1 ? true : false)
+  }
+
+  function changeColor(spot, color){
+    spot.css("backgroundColor",color)
+  }
+
+  function whiten(spot){
+    spot.css("backgroundColor","white")
+  }
+
+  function dropPiece(spot, row, col){
+    changeColor(spot, currentPlayer)
+    spotAboveSpot = $( '.piece[row="'+(row + 1)+'"][col="'+col+'"]' )
+    console.log(spotAboveSpot)
+    // changeColor(spotAboveSpot, "pink")
+    // setTimeout(function(){spot.css("backgroundColor","white")}, 5000);
+
+    // setTimeout("changeColor(spot, 'white')", 1000);
+    // spot.delay(1000).changeColor(spot, "green").delay(1000).changeColor(spot, "white")
+    // $( "#foo" ).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
+    // clear(spot).delay(3000)
+    // setInterval(clear(spot), 1000)
+    if (isBottomRow(spot)){
+      return spot
     }
-    else{
-      blueButton.css("box-shadow","0px 0px 50px 0px orange")
-      redButton.css("box-shadow","0px 0px 0px 0px")
+
+    spotBelowSpot = $( '.piece[row="'+(row -1)+'"][col="'+col+'"]' )
+    if(isUnoccupied(spotBelowSpot)){
+      return dropPiece(spotBelowSpot, row-1, col)
+    }
+    else {
+      return spot
     }
   }
 
@@ -185,6 +219,18 @@ $(document).ready(function(){
     }
   }
 
+  function setScore(winner){
+    if (winner==="red"){
+      redScore++
+      $("#red-score").text(redScore)
+
+    }
+    else{
+      blueScore++
+      $("#blue-score").text(blueScore)
+
+    }
+  }
 
   ////////////////////////// Body //////////////////////////
 
@@ -192,21 +238,26 @@ $(document).ready(function(){
   var pieces = $(".piece")
   var buttons = $(".button")
   var currentPlayer = null
+  var currentPlayerIcon = $(".current-player-icon");
+  var connectFour = $("#connect-four")
 
-  var redButton = $("#red")
-  redButton.css("backgroundColor","red")
-
-  var blueButton = $("#blue")
-  blueButton.css("backgroundColor","blue")
+  var gameCount = 0
+  var redScore = 0
+  var blueScore = 0
 
   setBoard();
 
   var newGame = $("#newGame")
-  newGame.on("click", setBoard)
+  newGame.on("click", function(event){
+    event.preventDefault();
+    console.log("You started a new game")
+    gameCount++
+    setBoard();
+  })
 
   for(var i=0; i <pieces.length; i++){
     $(pieces[i]).on("mouseover", function (event){
-      $(this).css("border","solid 1px "+currentPlayer+"")
+      $(this).css("border","solid 1px "+currentPlayer)
     })
 
     $(pieces[i]).on("mouseout", function (event){
@@ -219,7 +270,6 @@ $(document).ready(function(){
       if (!currentPlayer){
         currentPlayer = $(this).attr("id")
         $("h2").text("Your turn: " + currentPlayer)
-        highlightCurrentPlayer(currentPlayer)
       }
     })
   }
@@ -229,8 +279,53 @@ $(document).ready(function(){
     $(pieces[i]).on("click", function (event){
       var activeRow = parseInt($(this).attr("row"))
       var activeCol = parseInt($(this).attr("col"))
+      console.log(isUnoccupied($(this)))
 
+      if (currentPlayer && isUnoccupied($(this))){
+        if(isBottomRow($(this))){
+          $(this).attr("space-taken","true")
+          $(this).attr("color",currentPlayer)
+          $(this).css("backgroundColor",currentPlayer)
+          if (haveWinner(activeRow, activeCol)){
+            // $("h2").text(currentPlayer.toUpperCase()  + " wins!!")
+            $(connectFour).text(currentPlayer.toUpperCase()  + " WINS!!")
+            setScore(currentPlayer)
+            currentPlayer = null
+            // flipBoard()
+          }
+          else{
+            currentPlayer = getNextPlayer()
+            // $("h2").text("Your turn: " + currentPlayer)
+            $(currentPlayerIcon).css("backgroundColor",currentPlayer)
+          }
+
+        }
+        else{
+          lowestSpot = dropPiece($(this), activeRow, activeCol)
+          lowestSpot.attr("space-taken","true")
+          lowestSpot.attr("color",currentPlayer)
+          lowestSpot.css("backgroundColor",currentPlayer)
+          if (haveWinner(activeRow, activeCol)){
+            // $("h2").text(currentPlayer.toUpperCase()  + " wins!!")
+            $(connectFour).text(currentPlayer.toUpperCase()  + " WINS!!")
+            setScore(currentPlayer)
+
+            currentPlayer = null
+            // flipBoard()
+          }
+          else{
+            currentPlayer = getNextPlayer()
+            // $("h2").text("Your turn: " + currentPlayer)
+            $(currentPlayerIcon).css("backgroundColor",currentPlayer)
+
+          }
+
+        }
+      }
+
+/*
       if(currentPlayer && isValidSpot($(this), activeRow, activeCol)){
+
         $(this).attr("space-taken","true")
         $(this).attr("color",currentPlayer)
         $(this).css("backgroundColor",currentPlayer)
@@ -247,18 +342,12 @@ $(document).ready(function(){
           highlightCurrentPlayer(currentPlayer)
         }
       }
+    */
 
     })
   }
 
 
-// Example of asynchronous functions
-  // foo(bar)
-  //
-  //
-  // function foo(callback) {
-  //   doAsyncStuff(callback);
-  // }
 
 
   function flipBoard() {

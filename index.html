@@ -2,80 +2,118 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="grids.css">
   <link rel="stylesheet" href="style.css">
+  <link href='http://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
   <title>Connect Four</title>
 </head>
 <body>
-  <div id="gameboardContainer">
-    <table>
-      <tr id="row6">
-        <td><div class="piece" row="6" col="1"></div></td>
-        <td><div class="piece" row="6" col="2"></div></td>
-        <td><div class="piece" row="6" col="3"></div></td>
-        <td><div class="piece" row="6" col="4"></div></td>
-        <td><div class="piece" row="6" col="5"></div></td>
-        <td><div class="piece" row="6" col="6"></div></td>
-        <td><div class="piece" row="6" col="7"></div></td>
-      </tr>
+  <header>
+    <div class="row">
 
-      <tr id="row5">
-        <td><div class="piece" row="5" col="1"></div></td>
-        <td><div class="piece" row="5" col="2"></div></td>
-        <td><div class="piece" row="5" col="3"></div></td>
-        <td><div class="piece" row="5" col="4"></div></td>
-        <td><div class="piece" row="5" col="5"></div></td>
-        <td><div class="piece" row="5" col="6"></div></td>
-        <td><div class="piece" row="5" col="7"></div></td>
-      </tr>
+      <div class="column column-3 sidebar">
+        <h2>Current Player:</h2>
+        <div class="current-player-icon">
+        </div>
+      </div>
 
-      <tr id="row4">
-        <td><div class="piece" row="4" col="1"></div></td>
-        <td><div class="piece" row="4" col="2"></div></td>
-        <td><div class="piece" row="4" col="3"></div></td>
-        <td><div class="piece" row="4" col="4"></div></td>
-        <td><div class="piece" row="4" col="5"></div></td>
-        <td><div class="piece" row="4" col="6"></div></td>
-        <td><div class="piece" row="4" col="7"></div></td>
-      </tr>
+      <div class="column column-6 middle">
+        <div class="row">
+          <h1 id="connect-four"><span class="vitamin-c">Connect</span><span class="gamebookers-blue">Four</span></h1>
+        </div>
+        <div class="row">
+          <button id="newGame">New Game</button>
+        </div>
+      </div>
 
-      <tr id="row3">
-        <td><div class="piece" row="3" col="1"></div></td>
-        <td><div class="piece" row="3" col="2"></div></td>
-        <td><div class="piece" row="3" col="3"></div></td>
-        <td><div class="piece" row="3" col="4"></div></td>
-        <td><div class="piece" row="3" col="5"></div></td>
-        <td><div class="piece" row="3" col="6"></div></td>
-        <td><div class="piece" row="3" col="7"></div></td>
-      </tr>
+      <div class="column column-3 sidebar">
+        <h2>Score:</h2>
+        <div>
+          Red: <span id="red-score">0</span>
+        </div>
+        <div>
+          Blue: <span id="blue-score">0</span>
+        </div>
+      </div>
 
-      <tr id="row2">
-        <td><div class="piece" row="2" col="1"></div></td>
-        <td><div class="piece" row="2" col="2"></div></td>
-        <td><div class="piece" row="2" col="3"></div></td>
-        <td><div class="piece" row="2" col="4"></div></td>
-        <td><div class="piece" row="2" col="5"></div></td>
-        <td><div class="piece" row="2" col="6"></div></td>
-        <td><div class="piece" row="2" col="7"></div></td>
-      </tr>
+    </div>
+  </header>
 
-      <tr id="row1">
-        <td><div class="piece" row="1" col="1"></div></td>
-        <td><div class="piece" row="1" col="2"></div></td>
-        <td><div class="piece" row="1" col="3"></div></td>
-        <td><div class="piece" row="1" col="4"></div></td>
-        <td><div class="piece" row="1" col="5"></div></td>
-        <td><div class="piece" row="1" col="6"></div></td>
-        <td><div class="piece" row="1" col="7"></div></td>
-      </tr>
-    </table>
-  </div>
-  <div id="button_space">
-    <h2>Choose 1st Player</h2>
-    <button id="red" class="button">Red</button>
-    <button id="blue" class="button">Blue</button><br>
-    <button id="newGame">New Game</button>
+  <main>
+    <div class="row">
 
-  </div>
+      <table>
+        <tr id="row6">
+          <td><div class="piece" row="6" col="1"></div></td>
+          <td><div class="piece" row="6" col="2"></div></td>
+          <td><div class="piece" row="6" col="3"></div></td>
+          <td><div class="piece" row="6" col="4"></div></td>
+          <td><div class="piece" row="6" col="5"></div></td>
+          <td><div class="piece" row="6" col="6"></div></td>
+          <td><div class="piece" row="6" col="7"></div></td>
+        </tr>
+
+        <tr id="row5">
+          <td><div class="piece" row="5" col="1"></div></td>
+          <td><div class="piece" row="5" col="2"></div></td>
+          <td><div class="piece" row="5" col="3"></div></td>
+          <td><div class="piece" row="5" col="4"></div></td>
+          <td><div class="piece" row="5" col="5"></div></td>
+          <td><div class="piece" row="5" col="6"></div></td>
+          <td><div class="piece" row="5" col="7"></div></td>
+        </tr>
+
+        <tr id="row4">
+          <td><div class="piece" row="4" col="1"></div></td>
+          <td><div class="piece" row="4" col="2"></div></td>
+          <td><div class="piece" row="4" col="3"></div></td>
+          <td><div class="piece" row="4" col="4"></div></td>
+          <td><div class="piece" row="4" col="5"></div></td>
+          <td><div class="piece" row="4" col="6"></div></td>
+          <td><div class="piece" row="4" col="7"></div></td>
+        </tr>
+
+        <tr id="row3">
+          <td><div class="piece" row="3" col="1"></div></td>
+          <td><div class="piece" row="3" col="2"></div></td>
+          <td><div class="piece" row="3" col="3"></div></td>
+          <td><div class="piece" row="3" col="4"></div></td>
+          <td><div class="piece" row="3" col="5"></div></td>
+          <td><div class="piece" row="3" col="6"></div></td>
+          <td><div class="piece" row="3" col="7"></div></td>
+        </tr>
+
+        <tr id="row2">
+          <td><div class="piece" row="2" col="1"></div></td>
+          <td><div class="piece" row="2" col="2"></div></td>
+          <td><div class="piece" row="2" col="3"></div></td>
+          <td><div class="piece" row="2" col="4"></div></td>
+          <td><div class="piece" row="2" col="5"></div></td>
+          <td><div class="piece" row="2" col="6"></div></td>
+          <td><div class="piece" row="2" col="7"></div></td>
+        </tr>
+
+        <tr id="row1">
+          <td><div class="piece" row="1" col="1"></div></td>
+          <td><div class="piece" row="1" col="2"></div></td>
+          <td><div class="piece" row="1" col="3"></div></td>
+          <td><div class="piece" row="1" col="4"></div></td>
+          <td><div class="piece" row="1" col="5"></div></td>
+          <td><div class="piece" row="1" col="6"></div></td>
+          <td><div class="piece" row="1" col="7"></div></td>
+        </tr>
+      </table>
+
+    </div>
+
+    <!-- <div id="button_space">
+      <button id="red" class="button">Red</button>
+      <button id="blue" class="button">Blue</button><br>
+      <button id="newGame">New Game</button>
+    </div> -->
+
+  </main>
+
 </body>
 <script src = "https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src = "connectFour.js"></script>
