@@ -1,0 +1,24 @@
+{
+  "name": "connect_four",
+  "version": "1.0.0",
+  "description": "Play Connect Four!",
+  "main": "connectFour.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmallNic/ConnectFour.git"
+  },
+  "author": "Nic Small",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SmallNic/ConnectFour/issues"
+  },
+  "homepage": "https://github.com/SmallNic/ConnectFour#readme",
+  "dependencies": {
+    "express": "^4.12.4",
+    "hbs": "^3.1.0",
+    "mongoose": "^4.0.5"
+  }
+}
