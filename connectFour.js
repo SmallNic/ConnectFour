@@ -11,18 +11,16 @@ $(document).ready(function(){
 
     $(connectFour).html("<span class='vitamin-c'>Connect</span><span class='gamebookers-blue'>Four</span>")
 
-
     if (gameCount > 0){
-      currentPlayer = "red"
+      currentPlayer = (lastWinner === "red" ? "blue" : "red")
       $(currentPlayerIcon).css("backgroundColor",currentPlayer)
     }
+  }
 
-    // gameboardContainer.css("animation-name", "none")
-    // gameboardContainer.css("-webkit-animation-name", "none")
-    //
-    // gameboardContainer.css("animation-duration", "0s")
-    // gameboardContainer.css("-webkit-animation-duration", "0s")
-
+  function fillSpot(spot){
+    $(spot).attr("space-taken","true")
+    $(spot).attr("color",currentPlayer)
+    $(spot).css("backgroundColor",currentPlayer)
   }
 
   function getNeighboringColor(row, col, rowOffset, colOffset){
@@ -48,22 +46,9 @@ $(document).ready(function(){
     spot.css("backgroundColor",color)
   }
 
-  function whiten(spot){
-    spot.css("backgroundColor","white")
-  }
-
   function dropPiece(spot, row, col){
-    changeColor(spot, currentPlayer)
-    spotAboveSpot = $( '.piece[row="'+(row + 1)+'"][col="'+col+'"]' )
-    console.log(spotAboveSpot)
-    // changeColor(spotAboveSpot, "pink")
-    // setTimeout(function(){spot.css("backgroundColor","white")}, 5000);
+    // spotAboveSpot = $( '.piece[row="'+(row + 1)+'"][col="'+col+'"]' )
 
-    // setTimeout("changeColor(spot, 'white')", 1000);
-    // spot.delay(1000).changeColor(spot, "green").delay(1000).changeColor(spot, "white")
-    // $( "#foo" ).slideUp( 300 ).delay( 800 ).fadeIn( 400 );
-    // clear(spot).delay(3000)
-    // setInterval(clear(spot), 1000)
     if (isBottomRow(spot)){
       return spot
     }
@@ -97,6 +82,7 @@ $(document).ready(function(){
     }
   }
 
+  ////////////////////////// Game Winning Logic //////////////////////////
 
   function countDiagonalUpRight(row, col){
     var neighborCount = 0;
@@ -223,20 +209,16 @@ $(document).ready(function(){
     if (winner==="red"){
       redScore++
       $("#red-score").text(redScore)
-
     }
     else{
       blueScore++
       $("#blue-score").text(blueScore)
-
     }
   }
 
   ////////////////////////// Body //////////////////////////
 
-  var gameboardContainer = $("#gameboardContainer")
   var pieces = $(".piece")
-  var buttons = $(".button")
   var currentPlayer = null
   var currentPlayerIcon = $(".current-player-icon");
   var connectFour = $("#connect-four")
@@ -244,6 +226,7 @@ $(document).ready(function(){
   var gameCount = 0
   var redScore = 0
   var blueScore = 0
+  var lastWinner;
 
   setBoard();
 
@@ -256,106 +239,55 @@ $(document).ready(function(){
   })
 
   for(var i=0; i <pieces.length; i++){
+
+    var lowestSpot;
+
     $(pieces[i]).on("mouseover", function (event){
-      $(this).css("border","solid 1px "+currentPlayer)
+      if (currentPlayer){
+        var highlightedRow = parseInt($(this).attr("row"))
+        var highlightedCol = parseInt($(this).attr("col"))
+        lowestSpot = dropPiece($(this), highlightedRow, highlightedCol)
+        if (isUnoccupied(lowestSpot)){
+          changeColor(lowestSpot, currentPlayer)
+        }
+      }
     })
 
     $(pieces[i]).on("mouseout", function (event){
-      $(this).css("border","solid 1px black")
-    })
-  }
-
-  for(var i=0; i <buttons.length; i++){
-    $(buttons[i]).on("click", function (event){
-      if (!currentPlayer){
-        currentPlayer = $(this).attr("id")
-        $("h2").text("Your turn: " + currentPlayer)
+      if (currentPlayer && isUnoccupied(lowestSpot)){
+        changeColor(lowestSpot, "white")
       }
     })
-  }
-
-  for(var i=0; i <pieces.length; i++){
 
     $(pieces[i]).on("click", function (event){
-      var activeRow = parseInt($(this).attr("row"))
-      var activeCol = parseInt($(this).attr("col"))
-      console.log(isUnoccupied($(this)))
 
+      //check if the current spot is unoccupied
       if (currentPlayer && isUnoccupied($(this))){
-        if(isBottomRow($(this))){
-          $(this).attr("space-taken","true")
-          $(this).attr("color",currentPlayer)
-          $(this).css("backgroundColor",currentPlayer)
-          if (haveWinner(activeRow, activeCol)){
-            // $("h2").text(currentPlayer.toUpperCase()  + " wins!!")
-            $(connectFour).text(currentPlayer.toUpperCase()  + " WINS!!")
-            setScore(currentPlayer)
-            currentPlayer = null
-            // flipBoard()
-          }
-          else{
-            currentPlayer = getNextPlayer()
-            // $("h2").text("Your turn: " + currentPlayer)
-            $(currentPlayerIcon).css("backgroundColor",currentPlayer)
-          }
+        var clickedRow = parseInt($(this).attr("row"))
+        var clickedCol = parseInt($(this).attr("col"))
 
-        }
-        else{
-          lowestSpot = dropPiece($(this), activeRow, activeCol)
-          lowestSpot.attr("space-taken","true")
-          lowestSpot.attr("color",currentPlayer)
-          lowestSpot.css("backgroundColor",currentPlayer)
-          if (haveWinner(activeRow, activeCol)){
-            // $("h2").text(currentPlayer.toUpperCase()  + " wins!!")
-            $(connectFour).text(currentPlayer.toUpperCase()  + " WINS!!")
-            setScore(currentPlayer)
+        //find the lowest available cell in that column
+        lowestSpot = dropPiece($(this), clickedRow, clickedCol)
+        var lowestRow = parseInt(lowestSpot.attr("row"))
+        var lowestCol = parseInt(lowestSpot.attr("col"))
 
-            currentPlayer = null
-            // flipBoard()
-          }
-          else{
-            currentPlayer = getNextPlayer()
-            // $("h2").text("Your turn: " + currentPlayer)
-            $(currentPlayerIcon).css("backgroundColor",currentPlayer)
+        //fill that cell with the current player's color
+        fillSpot(lowestSpot)
 
-          }
-
-        }
-      }
-
-/*
-      if(currentPlayer && isValidSpot($(this), activeRow, activeCol)){
-
-        $(this).attr("space-taken","true")
-        $(this).attr("color",currentPlayer)
-        $(this).css("backgroundColor",currentPlayer)
-
-        if (haveWinner(activeRow, activeCol)){
-          $("h2").text(currentPlayer.toUpperCase()  + " wins!!")
-
-          flipBoard()
-
+        //check if that creates a winner
+        if (haveWinner(lowestRow, lowestCol)){
+          //announce winner and end game
+          $(connectFour).text(currentPlayer.toUpperCase()  + " WINS!!")
+          lastWinner = currentPlayer
+          setScore(currentPlayer)
+          currentPlayer = null
         }
         else{
           currentPlayer = getNextPlayer()
-          $("h2").text("Your turn: " + currentPlayer)
-          highlightCurrentPlayer(currentPlayer)
+          $(currentPlayerIcon).css("backgroundColor",currentPlayer)
         }
       }
-    */
-
     })
-  }
-
-
-
-
-  function flipBoard() {
-    gameboardContainer.css("animation-name", "flip")
-    gameboardContainer.css("-webkit-animation-name", "flip")
-
-    gameboardContainer.css("animation-duration", "2s")
-    gameboardContainer.css("-webkit-animation-duration", "2s")
   }
 
 })
