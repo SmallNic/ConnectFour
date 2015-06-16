@@ -38,7 +38,7 @@ app.get("/save", function(req, res){
   var lastWinner = req.query.lastWinner;
 
   Game.update({ num:gameCount, redScore:redScore, blueScore:blueScore, lastWinner:lastWinner}, function (err, raw) {
-    if (err) return handleError(err);
+    if (err) console.log(err);
     // console.log('The raw response from Mongo was ', raw);
   });
   Game.save

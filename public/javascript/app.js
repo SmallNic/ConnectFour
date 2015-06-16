@@ -224,9 +224,15 @@ $(document).ready(function(){
 
   var gameStats = $("#game-stats")
   var gameCount = gameStats.attr("game-count")
+  console.log("gameCount", gameCount)
   var redScore = gameStats.attr("red-score")
+  console.log("redScore", redScore)
+
   var blueScore = gameStats.attr("blue-score")
+  console.log("blueScore", blueScore)
+
   var lastWinner = gameStats.attr("last-winner")
+  console.log("lastWinner", lastWinner)
 
   setBoard();
 

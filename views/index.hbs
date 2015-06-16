@@ -14,7 +14,9 @@
       </div>
       <div class="row">
         <button id="newGame" >New Game</button>
-        <span id="game-stats" game-count={{game.redScore}} last-winner={{game.lastWinner}} red-score={{game.redScore}} blue-score={{game.blueScore}}></span>
+        <!-- {{game.num}} - {{game.lastWinner}} - {{game.redScore}} - {{game.blueScore}} -->
+
+        <span id="game-stats" game-count={{game.num}} red-score={{game.redScore}} blue-score={{game.blueScore}} last-winner={{game.lastWinner}}></span>
       </div>
     </div>
 
